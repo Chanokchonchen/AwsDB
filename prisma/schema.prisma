@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AwsAccount {
+
+  accountId String @db.VarChar(12) @unique @id
+  accountName String @db.VarChar(128) 
+  records AwsRecord[]
+  @@map("aws_account")
+}
+
+model AwsRecord {
+
+  id        Int      @default(autoincrement()) @id
+  year      Int      @db.Integer()
+  month     Int      @db.Integer()
+  awsAccount AwsAccount @relation(fields: [accountId], references: [accountId])
+  accountId String
+  serviceName String @db.VarChar(128)
+  rawRegion String @db.VarChar(64)
+  region String @db.VarChar(64)
+  rawSubServiceName String @db.VarChar(128)
+  subServiceName String @db.VarChar(128)
+  usage Decimal @db.Decimal()
+  unit String @db.VarChar(64)
+  rawDescription String @db.VarChar(128)
+  description String @db.VarChar(128)
+  pricePerUnit Decimal @db.Decimal()
+  prices Decimal @db.Decimal()
+  saves Decimal @db.Decimal()
+  nets Decimal @db.Decimal()
+  @@map("aws_record")
+  
+  @@index([year,month,accountId, serviceName])
+  
+}
