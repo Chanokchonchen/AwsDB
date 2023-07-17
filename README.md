@@ -21,6 +21,12 @@ yarn prisma migrate reset
 - **Seed Database**
 
 ```
-yarn seed
+yarn db:seed
+```
+
+- **Format Description**
+
+```
+yarn db:format
 ```
 
