@@ -60,6 +60,18 @@ export const read_aws_record = async (filename:string) : Promise<AwsRecordRaw[]>
         });
     })
 }
+
+export const getAllFiles = async () : Promise<string[]> => {
+
+    return new Promise((resolve, reject) => {
+        fs.readdir("aws/records", (err, files) => {
+            if (err) reject(err)
+            resolve(files)
+        });
+    })
+    
+}
+
 export const formatRawToModel = (data :  AwsRecordRaw) : AwsRecordModel => {
     return {
         ...data,

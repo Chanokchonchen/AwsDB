@@ -12,8 +12,8 @@ datasource db {
 
 model AwsAccount {
 
-  accountId String @db.VarChar(12) @unique @id
-  accountName String @db.VarChar(128) 
+  accountId String @db.VarChar(12) @map("account_id") @unique @id
+  accountName String @db.VarChar(128) @map("account_name")
   records AwsRecord[]
   @@map("aws_account")
 }
@@ -24,20 +24,20 @@ model AwsRecord {
   year      Int      @db.Integer()
   month     Int      @db.Integer()
   awsAccount AwsAccount @relation(fields: [accountId], references: [accountId])
-  accountId String
-  serviceName String @db.VarChar(128)
-  rawRegion String @db.VarChar(64)
-  region String @db.VarChar(64)
-  rawSubServiceName String @db.VarChar(128)
-  subServiceName String @db.VarChar(128)
-  usage Decimal @db.Decimal()
+  accountId String @map("account_id")
+  serviceName String @db.VarChar(128) @map("service_name")
+  rawRegion String @db.VarChar(64) @map("raw_region")
+  region String @db.VarChar(64) @map("region")
+  rawSubServiceName String @db.VarChar(128) @map("raw_sub_service_name")
+  subServiceName String @db.VarChar(128) @map("sub_service_name")
+  usage Decimal @db.Decimal(16, 3) 
   unit String @db.VarChar(64)
-  rawDescription String @db.VarChar(128)
-  description String @db.VarChar(128)
-  pricePerUnit Decimal @db.Decimal()
-  prices Decimal @db.Decimal()
-  saves Decimal @db.Decimal()
-  nets Decimal @db.Decimal()
+  rawDescription String @db.VarChar(128) @map("raw_description")
+  description String @db.VarChar(128) 
+  pricePerUnit Decimal @db.Decimal(16, 5) @map("price_per_unit")
+  prices Decimal @db.Decimal(16, 2) 
+  saves Decimal @db.Decimal(16, 2)
+  nets Decimal @db.Decimal(16, 2)
   @@map("aws_record")
   
   @@index([year,month,accountId, serviceName])
